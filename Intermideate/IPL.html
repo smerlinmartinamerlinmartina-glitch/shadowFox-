@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Royal Challengers Bengaluru</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rcb-red: #C8102E;
+    --rcb-gold: #D4AF37;
+    --rcb-dark: #0D0D0D;
+    --rcb-darker: #050505;
+    --rcb-gray: #1A1A1A;
+    --rcb-gray2: #252525;
+    --rcb-text: #F5F0E8;
+    --rcb-muted: #8A8070;
+    --rcb-border: rgba(212,175,55,0.2);
+    --ff-display: 'Bebas Neue', sans-serif;
+    --ff-heading: 'Barlow Condensed', sans-serif;
+    --ff-body: 'Barlow', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--rcb-darker); color: var(--rcb-text); font-family: var(--ff-body); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 64px;
+    background: rgba(5,5,5,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rcb-border);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-emblem {
+    width: 42px; height: 42px; background: var(--rcb-red);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--ff-display); font-size: 14px; color: var(--rcb-gold); letter-spacing: 1px;
+  }
+  .nav-brand { font-family: var(--ff-display); font-size: 22px; letter-spacing: 2px; color: var(--rcb-text); }
+  .nav-brand span { color: var(--rcb-gold); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--rcb-muted); font-family: var(--ff-heading); font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; transition: color .2s; }
+  .nav-links a:hover { color: var(--rcb-gold); }
+  .nav-cta {
+    background: var(--rcb-red); color: #fff; border: none; padding: 8px 20px;
+    font-family: var(--ff-heading); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: background .2s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .nav-cta:hover { background: #a00d24; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 40px 60px; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(200,16,46,0.18) 0%, transparent 65%),
+                radial-gradient(ellipse at 20% 80%, rgba(212,175,55,0.08) 0%, transparent 50%),
+                var(--rcb-darker);
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(212,175,55,0.04) 60px),
+                      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(212,175,55,0.04) 60px);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+  .hero-eyebrow {
+    font-family: var(--ff-heading); font-size: 13px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--rcb-gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--rcb-gold); }
+  .hero-title { font-family: var(--ff-display); font-size: clamp(72px, 12vw, 130px); line-height: 0.9; letter-spacing: 2px; color: var(--rcb-text); }
+  .hero-title .red { color: var(--rcb-red); display: block; }
+  .hero-title .gold { color: var(--rcb-gold); display: block; font-size: 0.55em; letter-spacing: 8px; }
+  .hero-sub { font-size: 18px; color: var(--rcb-muted); margin: 24px 0 36px; max-width: 440px; line-height: 1.6; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--rcb-red); color: #fff; border: none; padding: 14px 32px;
+    font-family: var(--ff-heading); font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all .2s;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  }
+  .btn-primary:hover { background: #a00d24; transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--rcb-gold); border: 1px solid var(--rcb-gold); padding: 14px 32px;
+    font-family: var(--ff-heading); font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-outline:hover { background: rgba(212,175,55,0.1); }
+  .hero-stats {
+    position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 2px; z-index: 2;
+  }
+  .hero-stat-card {
+    background: rgba(26,26,26,0.7); border: 1px solid var(--rcb-border);
+    border-left: 3px solid var(--rcb-red); padding: 16px 24px; min-width: 160px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-stat-card .stat-num { font-family: var(--ff-display); font-size: 42px; color: var(--rcb-gold); line-height: 1; }
+  .hero-stat-card .stat-label { font-family: var(--ff-heading); font-size: 11px; letter-spacing: 2px; color: var(--rcb-muted); text-transform: uppercase; margin-top: 4px; }
+
+  /* SECTION */
+  section { padding: 80px 40px; }
+  .section-eyebrow {
+    font-family: var(--ff-heading); font-size: 12px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--rcb-red); margin-bottom: 8px;
+  }
+  .section-title { font-family: var(--ff-display); font-size: clamp(40px, 6vw, 72px); line-height: 1; margin-bottom: 48px; }
+  .section-title span { color: var(--rcb-gold); }
+  .divider { width: 60px; height: 3px; background: var(--rcb-red); margin-bottom: 48px; }
+
+  /* MATCH SCHEDULE */
+  .schedule-section { background: var(--rcb-gray); }
+  .schedule-grid { display: grid; gap: 2px; }
+  .match-card {
+    background: var(--rcb-gray2); padding: 20px 28px;
+    display: grid; grid-template-columns: 120px 1fr auto auto; align-items: center; gap: 20px;
+    border-left: 3px solid transparent; transition: all .2s; cursor: pointer;
+  }
+  .match-card:hover { border-left-color: var(--rcb-gold); background: rgba(37,37,37,0.9); }
+  .match-card.live { border-left-color: var(--rcb-red); }
+  .match-date { font-family: var(--ff-heading); font-size: 13px; color: var(--rcb-muted); letter-spacing: 1px; }
+  .match-teams { display: flex; align-items: center; gap: 16px; }
+  .team-name { font-family: var(--ff-heading); font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+  .team-name.rcb { color: var(--rcb-red); }
+  .vs-badge {
+    font-family: var(--ff-display); font-size: 13px; color: var(--rcb-muted);
+    border: 1px solid rgba(138,128,112,0.3); padding: 2px 8px;
+  }
+  .match-venue { font-size: 13px; color: var(--rcb-muted); }
+  .match-status { font-family: var(--ff-heading); font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 4px 12px; }
+  .status-live { background: rgba(200,16,46,0.2); color: var(--rcb-red); border: 1px solid rgba(200,16,46,0.4); }
+  .status-upcoming { background: rgba(212,175,55,0.1); color: var(--rcb-gold); border: 1px solid rgba(212,175,55,0.3); }
+  .status-win { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .status-loss { color: var(--rcb-muted); border: 1px solid rgba(138,128,112,0.2); }
+
+  /* PLAYERS */
+  .players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2px; }
+  .player-card {
+    background: var(--rcb-gray); position: relative; overflow: hidden;
+    aspect-ratio: 3/4; display: flex; flex-direction: column; justify-content: flex-end;
+    cursor: pointer; transition: transform .3s;
+  }
+  .player-card:hover { transform: scale(1.02); z-index: 2; }
+  .player-card:hover .player-overlay { opacity: 1; }
+  .player-jersey {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--ff-display); font-size: 120px; color: rgba(200,16,46,0.08); pointer-events: none;
+  }
+  .player-info {
+    background: linear-gradient(0deg, rgba(5,5,5,0.95) 0%, transparent 100%);
+    padding: 40px 16px 16px; position: relative; z-index: 2;
+  }
+  .player-role {
+    font-family: var(--ff-heading); font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--rcb-gold); margin-bottom: 4px;
+  }
+  .player-name { font-family: var(--ff-heading); font-size: 22px; font-weight: 700; line-height: 1.1; }
+  .player-num { position: absolute; top: 16px; right: 16px; font-family: var(--ff-display); font-size: 48px; color: var(--rcb-gold); opacity: 0.4; line-height: 1; z-index: 2; }
+  .player-overlay {
+    position: absolute; inset: 0; background: rgba(200,16,46,0.85); display: flex;
+    flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    opacity: 0; transition: opacity .25s; z-index: 5;
+  }
+  .overlay-stat { text-align: center; }
+  .overlay-stat .num { font-family: var(--ff-display); font-size: 44px; color: #fff; line-height: 1; }
+  .overlay-stat .lbl { font-family: var(--ff-heading); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+  .player-divider { width: 32px; height: 1px; background: rgba(255,255,255,0.3); }
+
+  /* STATS SECTION */
+  .stats-section { background: var(--rcb-darker); }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .stat-block { background: var(--rcb-gray); padding: 40px; position: relative; overflow: hidden; }
+  .stat-block::after {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%);
+  }
+  .stat-block .big-num { font-family: var(--ff-display); font-size: 80px; color: var(--rcb-red); line-height: 1; }
+  .stat-block .big-label { font-family: var(--ff-heading); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--rcb-muted); margin-top: 8px; }
+  .stat-block .big-sub { font-size: 14px; color: var(--rcb-muted); margin-top: 12px; }
+  .wins-bar-wrap { margin-top: 24px; }
+  .wins-bar-track { background: rgba(255,255,255,0.07); height: 6px; border-radius: 0; overflow: hidden; }
+  .wins-bar-fill { height: 100%; background: linear-gradient(90deg, var(--rcb-red), var(--rcb-gold)); border-radius: 0; transition: width 1.5s ease; }
+
+  /* NEWS */
+  .news-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+  .news-card { background: var(--rcb-gray); overflow: hidden; cursor: pointer; transition: all .2s; }
+  .news-card:hover { background: var(--rcb-gray2); }
+  .news-card:hover .news-title { color: var(--rcb-gold); }
+  .news-card.featured { grid-column: span 2; }
+  .news-img {
+    height: 200px; background: var(--rcb-gray2); display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .news-img-icon { font-family: var(--ff-display); font-size: 80px; color: rgba(200,16,46,0.15); }
+  .news-img-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--rcb-red); }
+  .news-body { padding: 20px; }
+  .news-category {
+    font-family: var(--ff-heading); font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--rcb-red); margin-bottom: 8px;
+  }
+  .news-title { font-family: var(--ff-heading); font-size: 18px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; transition: color .2s; }
+  .news-meta { font-size: 12px; color: var(--rcb-muted); }
+
+  /* FAN ZONE */
+  .fanzone-section { background: var(--rcb-gray); }
+  .poll-card { background: var(--rcb-gray2); padding: 32px; max-width: 560px; }
+  .poll-q { font-family: var(--ff-heading); font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+  .poll-options { display: flex; flex-direction: column; gap: 10px; }
+  .poll-btn {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--rcb-text); padding: 14px 20px; cursor: pointer; text-align: left;
+    font-family: var(--ff-body); font-size: 15px; transition: all .2s; position: relative; overflow: hidden;
+  }
+  .poll-btn:hover { border-color: var(--rcb-gold); color: var(--rcb-gold); }
+  .poll-btn.voted { border-color: var(--rcb-red); }
+  .poll-bar { position: absolute; inset: 0; background: rgba(200,16,46,0.15); transform-origin: left; transition: transform .8s ease; }
+  .poll-btn-text { position: relative; z-index: 1; display: flex; justify-content: space-between; }
+  .poll-pct { font-weight: 600; color: var(--rcb-red); }
+
+  /* SOCIAL */
+  .social-row { display: flex; gap: 2px; margin-top: 48px; }
+  .social-tile { background: var(--rcb-gray2); padding: 20px 28px; flex: 1; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: all .2s; border-top: 3px solid transparent; }
+  .social-tile:hover { border-top-color: var(--rcb-gold); }
+  .social-icon { width: 40px; height: 40px; background: var(--rcb-red); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .social-info { }
+  .social-handle { font-family: var(--ff-heading); font-size: 16px; font-weight: 700; }
+  .social-followers { font-size: 13px; color: var(--rcb-muted); }
+
+  /* FOOTER */
+  footer {
+    background: var(--rcb-darker); border-top: 1px solid var(--rcb-border);
+    padding: 40px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo { font-family: var(--ff-display); font-size: 28px; letter-spacing: 3px; }
+  .footer-logo span { color: var(--rcb-gold); }
+  .footer-copy { font-size: 13px; color: var(--rcb-muted); }
+
+  /* LIVE DOT */
+  .live-dot { display: inline-block; width: 8px; height: 8px; background: var(--rcb-red); border-radius: 50%; margin-right: 6px; animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 20px 60px; }
+    .hero-stats { position: static; flex-direction: row; transform: none; margin-top: 40px; }
+    section { padding: 60px 20px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+    .news-card.featured { grid-column: span 1; }
+    .players-grid { grid-template-columns: repeat(2, 1fr); }
+    .match-card { grid-template-columns: 1fr; gap: 8px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">
+    <div class="logo-emblem">RCB</div>
+    <span class="nav-brand">Royal <span>Challengers</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#squad">Squad</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#fanzone">Fan Zone</a></li>
+  </ul>
+  <button class="nav-cta">Play Bold</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">IPL 2025 — Season 18</p>
+    <h1 class="hero-title">
+      <span class="gold">Royal Challengers</span>
+      BENGA
+      <span class="red">LURU</span>
+    </h1>
+    <p class="hero-sub">Fearless. Fierce. Forever bold. The RCB family is united by passion and a relentless hunger for glory at Chinnaswamy.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('schedule').scrollIntoView({behavior:'smooth'})">Match Schedule</button>
+      <button class="btn-outline" onclick="document.getElementById('squad').scrollIntoView({behavior:'smooth'})">View Squad</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat-card">
+      <div class="stat-num">17</div>
+      <div class="stat-label">IPL Seasons</div>
+    </div>
+    <div class="hero-stat-card">
+      <div class="stat-num">160M+</div>
+      <div class="stat-label">Global Fans</div>
+    </div>
+    <div class="hero-stat-card">
+      <div class="stat-num">3×</div>
+      <div class="stat-label">Finalists</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section" id="schedule">
+  <div class="reveal">
+    <p class="section-eyebrow">IPL 2025</p>
+    <h2 class="section-title">Match <span>Schedule</span></h2>
+  </div>
+  <div class="schedule-grid reveal">
+    <div class="match-card live">
+      <div class="match-date"><span class="live-dot"></span>LIVE NOW</div>
+      <div class="match-teams">
+        <span class="team-name rcb">RCB</span>
+        <span class="vs-badge">VS</span>
+        <span class="team-name">MI</span>
+      </div>
+      <div class="match-venue">Chinnaswamy, Bengaluru</div>
+      <span class="match-status status-live">LIVE · 156/6</span>
+    </div>
+    <div class="match-card">
+      <div class="match-date">APR 22, 2025</div>
+      <div class="match-teams">
+        <span class="team-name rcb">RCB</span>
+        <span class="vs-badge">VS</span>
+        <span class="team-name">CSK</span>
+      </div>
+      <div class="match-venue">Chinnaswamy, Bengaluru</div>
+      <span class="match-status status-upcoming">UPCOMING</span>
+    </div>
+    <div class="match-card">
+      <div class="match-date">APR 26, 2025</div>
+      <div class="match-teams">
+        <span class="team-name">GT</span>
+        <span class="vs-badge">VS</span>
+        <span class="team-name rcb">RCB</span>
+      </div>
+      <div class="match-venue">Narendra Modi, Ahmedabad</div>
+      <span class="match-status status-upcoming">UPCOMING</span>
+    </div>
+    <div class="match-card">
+      <div class="match-date">APR 14, 2025</div>
+      <div class="match-teams">
+        <span class="team-name rcb">RCB</span>
+        <span class="vs-badge">VS</span>
+        <span class="team-name">KKR</span>
+      </div>
+      <div class="match-venue">Eden Gardens, Kolkata</div>
+      <span class="match-status status-win">WON · +32 runs</span>
+    </div>
+    <div class="match-card">
+      <div class="match-date">APR 10, 2025</div>
+      <div class="match-teams">
+        <span class="team-name rcb">RCB</span>
+        <span class="vs-badge">VS</span>
+        <span class="team-name">PBKS</span>
+      </div>
+      <div class="match-venue">Chinnaswamy, Bengaluru</div>
+      <span class="match-status status-loss">LOST · -5 wickets</span>
+    </div>
+  </div>
+</section>
+
+<!-- SQUAD -->
+<section id="squad">
+  <div class="reveal">
+    <p class="section-eyebrow">IPL 2025 Roster</p>
+    <h2 class="section-title">The <span>Squad</span></h2>
+  </div>
+  <div class="players-grid reveal">
+    <div class="player-card">
+      <div class="player-jersey">1</div>
+      <div class="player-num">1</div>
+      <div class="player-overlay">
+        <div class="overlay-stat"><div class="num">741</div><div class="lbl">Season Runs</div></div>
+        <div class="player-divider"></div>
+        <div class="overlay-stat"><div class="num">58.4</div><div class="lbl">Avg</div></div>
+      </div>
+      <div class="player-info">
+        <div class="player-role">Batter</div>
+        <div class="player-name">Virat Kohli</div>
+      </div>
+    </div>
+    <div class="player-card">
+      <div class="player-jersey">17</div>
+      <div class
