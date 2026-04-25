@@ -1,0 +1,745 @@
+!DOCTYPE html>
+<html< lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServeNow — Service Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--brand:#1a1a2e;--brand2:#e63946;--brand3:#457b9d;
+--bg:#f8f7f4;--surface:#fff;--surface2:#f2f0ec;
+--text:#1a1a2e;--text2:#5a5a72;--text3:#9a9aaa;
+--border:#e8e5df;--radius:12px;--radius-sm:8px;--shadow:0 2px 16px rgba(26,26,46,0.08);
+--ff:'DM Sans',sans-serif;--ff-display:'Fraunces',serif;
+}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+/* NAV */
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 2rem}
+.nav-inner{max-width:1280px;margin:0 auto;height:64px;display:flex;align-items:center;gap:1.5rem}
+.logo{font-family:var(--ff-display);font-size:1.5rem;font-weight:700;color:var(--brand);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo-dot{width:8px;height:8px;background:var(--brand2);border-radius:50%;display:inline-block}
+.nav-search{flex:1;max-width:420px;position:relative}
+.nav-search input{width:100%;padding:10px 16px 10px 40px;border:1.5px solid var(--border);border-radius:50px;font-size:14px;font-family:var(--ff);background:var(--surface2);color:var(--text);outline:none;transition:.2s}
+.nav-search input:focus{border-color:var(--brand3);background:#fff}
+.nav-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.4}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:auto}
+.nav-btn{padding:8px 18px;border-radius:50px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--ff);transition:.15s}
+.nav-btn.ghost{background:transparent;color:var(--text2)}
+.nav-btn.ghost:hover{background:var(--surface2)}
+.nav-btn.primary{background:var(--brand);color:#fff}
+.nav-btn.primary:hover{background:#2d2d4a}
+.nav-btn.active{background:var(--brand2);color:#fff}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#457b9d,#1a1a2e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
+
+/* PAGES */
+.page{display:none;max-width:1280px;margin:0 auto;padding:2rem}
+.page.active{display:block}
+
+/* HOME HERO */
+.hero{background:var(--brand);border-radius:20px;padding:4rem 3rem;margin-bottom:2.5rem;position:relative;overflow:hidden;color:#fff}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;background:rgba(230,57,70,0.15);border-radius:50%}
+.hero::after{content:'';position:absolute;right:80px;bottom:-80px;width:200px;height:200px;background:rgba(69,123,157,0.2);border-radius:50%}
+.hero h1{font-family:var(--ff-display);font-size:3rem;font-weight:700;line-height:1.15;margin-bottom:.75rem;position:relative;z-index:1}
+.hero h1 em{color:#e6b89c;font-style:normal}
+.hero p{font-size:1.1rem;color:rgba(255,255,255,0.75);margin-bottom:2rem;max-width:520px;position:relative;z-index:1}
+.hero-search{display:flex;gap:8px;max-width:560px;position:relative;z-index:1}
+.hero-search input{flex:1;padding:14px 20px;border:none;border-radius:12px;font-size:15px;font-family:var(--ff);background:rgba(255,255,255,0.12);color:#fff;outline:none;backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,0.15)}
+.hero-search input::placeholder{color:rgba(255,255,255,0.5)}
+.hero-search button{padding:14px 28px;background:var(--brand2);color:#fff;border:none;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;font-family:var(--ff);white-space:nowrap;transition:.15s}
+.hero-search button:hover{background:#c1121f}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.25rem;position:relative;z-index:1}
+.tag{padding:6px 14px;background:rgba(255,255,255,0.12);border-radius:50px;font-size:13px;color:rgba(255,255,255,0.8);cursor:pointer;border:1px solid rgba(255,255,255,0.15);transition:.15s}
+.tag:hover{background:rgba(255,255,255,0.2)}
+.hero-stats{display:flex;gap:2rem;margin-top:2rem;position:relative;z-index:1}
+.stat{text-align:center}
+.stat strong{display:block;font-family:var(--ff-display);font-size:1.6rem;font-weight:700}
+.stat span{font-size:12px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.05em}
+
+/* SECTION */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.section-header h2{font-family:var(--ff-display);font-size:1.6rem;font-weight:600}
+.see-all{font-size:14px;color:var(--brand3);font-weight:500;cursor:pointer}
+.see-all:hover{text-decoration:underline}
+
+/* CATEGORY PILLS */
+.cats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:2rem}
+.cat-pill{padding:10px 20px;background:var(--surface);border:1.5px solid var(--border);border-radius:50px;font-size:14px;font-weight:500;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:8px}
+.cat-pill:hover,.cat-pill.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.cat-icon{width:20px;height:20px;border-radius:4px;overflow:hidden;flex-shrink:0}
+
+/* SERVICE CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin-bottom:2.5rem}
+.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:.2s;position:relative}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(26,26,46,0.12)}
+.card-img{height:170px;position:relative;overflow:hidden;background:#e8e5df}
+.card-img img{transition:.4s}
+.card:hover .card-img img{transform:scale(1.06)}
+.card-badge{position:absolute;top:10px;left:10px;background:var(--brand2);color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:50px;letter-spacing:.04em;text-transform:uppercase}
+.card-fav{position:absolute;top:10px;right:10px;width:32px;height:32px;background:rgba(255,255,255,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.card-fav:hover{background:#fff;transform:scale(1.1)}
+.card-body{padding:1rem 1.1rem 1.1rem}
+.card-provider{display:flex;align-items:center;gap:8px;margin-bottom:.5rem}
+.provider-avatar{width:28px;height:28px;border-radius:50%;overflow:hidden;background:#c8c8e0;flex-shrink:0}
+.provider-name{font-size:13px;color:var(--text2);font-weight:500}
+.provider-verified{width:14px;height:14px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0}
+.card-title{font-size:15px;font-weight:600;line-height:1.35;margin-bottom:.5rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
+.rating{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:#f59e0b}
+.rating span{color:var(--text3);font-weight:400}
+.price{font-family:var(--ff-display);font-size:1.1rem;font-weight:700;color:var(--brand)}
+.price small{font-family:var(--ff);font-size:11px;font-weight:400;color:var(--text3)}
+
+/* FILTERS */
+.filters-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap}
+.filter-select{padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--ff);background:var(--surface);color:var(--text);cursor:pointer;outline:none}
+.filter-select:focus{border-color:var(--brand3)}
+.result-count{margin-left:auto;font-size:14px;color:var(--text2)}
+
+/* SERVICE DETAIL */
+.detail-grid{display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start}
+.detail-main{}
+.detail-img{height:380px;border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;position:relative}
+.detail-img-overlay{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(transparent,rgba(26,26,46,0.6));display:flex;align-items:flex-end;padding:1.25rem}
+.detail-h1{font-family:var(--ff-display);font-size:1.9rem;font-weight:700;line-height:1.2;margin-bottom:.75rem}
+.detail-provider-row{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.detail-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;background:#c8c8e0}
+.detail-meta{font-size:14px;color:var(--text2)}
+.detail-meta strong{color:var(--text);font-weight:600;display:block}
+.badges-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.badge{padding:5px 12px;border-radius:50px;font-size:12px;font-weight:600;background:var(--surface2);color:var(--text2)}
+.badge.green{background:#dcfce7;color:#166534}
+.badge.blue{background:#dbeafe;color:#1d4ed8}
+.detail-desc{font-size:15px;line-height:1.7;color:var(--text2);margin-bottom:1.5rem}
+.detail-features{margin-bottom:1.5rem}
+.detail-features h3{font-weight:600;margin-bottom:.75rem}
+.feature-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;border-bottom:1px solid var(--border)}
+.feature-check{width:20px;height:20px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* BOOKING CARD */
+.booking-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.5rem;position:sticky;top:80px}
+.booking-price{font-family:var(--ff-display);font-size:2rem;font-weight:700;margin-bottom:4px}
+.booking-price small{font-size:1rem;font-weight:400;color:var(--text2)}
+.booking-rating{display:flex;align-items:center;gap:6px;font-size:14px;margin-bottom:1.25rem;color:var(--text2)}
+.booking-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:var(--ff);margin-bottom:.75rem;outline:none;background:#fff;transition:.2s}
+.booking-input:focus{border-color:var(--brand3)}
+.booking-btn{width:100%;padding:14px;background:var(--brand2);color:#fff;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:600;cursor:pointer;font-family:var(--ff-display);margin-top:.5rem;transition:.15s}
+.booking-btn:hover{background:#c1121f}
+.booking-features{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.bf{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-bottom:.5rem}
+
+/* REVIEWS */
+.reviews-section{margin-top:2rem}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin-bottom:1rem}
+.review-top{display:flex;align-items:center;gap:10px;margin-bottom:.5rem}
+.review-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;background:#ddd}
+.review-name{font-weight:600;font-size:14px}
+.review-date{font-size:12px;color:var(--text3);margin-left:auto}
+.review-text{font-size:14px;color:var(--text2);line-height:1.6}
+.stars{color:#f59e0b;font-size:14px;letter-spacing:1px;margin:.25rem 0}
+
+/* DASHBOARD */
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
+.dash-header h1{font-family:var(--ff-display);font-size:2rem;font-weight:700}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.stat-card .label{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-weight:600;margin-bottom:.4rem}
+.stat-card .value{font-family:var(--ff-display);font-size:1.8rem;font-weight:700}
+.stat-card .change{font-size:12px;margin-top:.25rem}
+.stat-card .change.up{color:#22c55e}
+.stat-card .change.down{color:var(--brand2)}
+.stat-card-accent{border-left:3px solid}
+.acc-green{border-color:#22c55e}
+.acc-blue{border-color:var(--brand3)}
+.acc-red{border-color:var(--brand2)}
+.acc-gold{border-color:#f59e0b}
+
+.bookings-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:2rem}
+.table-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.table-header h3{font-weight:600;font-size:1rem}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-weight:600;padding:.75rem 1.5rem;border-bottom:1px solid var(--border);background:var(--surface2)}
+td{padding:.9rem 1.5rem;font-size:14px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+.status-pill{padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.status-pill.confirmed{background:#dcfce7;color:#166534}
+.status-pill.pending{background:#fef9c3;color:#854d0e}
+.status-pill.completed{background:#dbeafe;color:#1d4ed8}
+.status-pill.cancelled{background:#fee2e2;color:#991b1b}
+.action-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--text2);font-family:var(--ff);transition:.15s}
+.action-btn:hover{background:var(--surface2)}
+
+/* AUTH */
+.auth-wrap{max-width:460px;margin:3rem auto}
+.auth-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem}
+.auth-logo{font-family:var(--ff-display);font-size:1.8rem;font-weight:700;text-align:center;margin-bottom:0.25rem;color:var(--brand)}
+.auth-subtitle{text-align:center;color:var(--text2);font-size:14px;margin-bottom:2rem}
+.auth-tab-row{display:flex;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:9px;text-align:center;font-size:14px;font-weight:500;cursor:pointer;border-radius:6px;transition:.15s}
+.auth-tab.active{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08);color:var(--brand)}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text2)}
+.form-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:var(--ff);outline:none;transition:.2s}
+.form-input:focus{border-color:var(--brand3)}
+.form-select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:var(--ff);background:#fff;cursor:pointer;outline:none}
+.form-submit{width:100%;padding:14px;background:var(--brand);color:#fff;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--ff-display);margin-top:.5rem;transition:.15s}
+.form-submit:hover{background:#2d2d4a}
+.divider{display:flex;align-items:center;gap:12px;margin:1rem 0;color:var(--text3);font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.social-btn{width:100%;padding:11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:#fff;font-size:14px;cursor:pointer;font-family:var(--ff);font-weight:500;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.social-btn:hover{background:var(--surface2)}
+.role-selector{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem}
+.role-opt{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;cursor:pointer;transition:.15s;font-size:13px;font-weight:500}
+.role-opt.selected{border-color:var(--brand3);background:#f0f7ff;color:var(--brand)}
+.role-icon{font-size:20px;display:block;margin-bottom:4px}
+
+/* PROVIDER DASH */
+.prov-hero{background:linear-gradient(135deg,var(--brand),#2d2d5a);color:#fff;border-radius:20px;padding:2rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem}
+.prov-avatar-lg{width:72px;height:72px;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.3)}
+.prov-info h2{font-family:var(--ff-display);font-size:1.4rem;font-weight:700;margin-bottom:.25rem}
+.prov-info p{opacity:.7;font-size:14px}
+.prov-rating{display:flex;align-items:center;gap:8px;margin-top:.5rem}
+.prov-badge{padding:4px 12px;background:rgba(255,255,255,.15);border-radius:50px;font-size:12px;font-weight:600}
+.upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:.2s;margin-bottom:1rem}
+.upload-area:hover{border-color:var(--brand3);background:#f0f7ff}
+.upload-icon{font-size:2.5rem;margin-bottom:.75rem}
+.upload-text{font-size:15px;font-weight:500;margin-bottom:.25rem}
+.upload-hint{font-size:13px;color:var(--text3)}
+
+/* SKELETON */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton{background:linear-gradient(90deg,#f0ece6 25%,#e8e4de 50%,#f0ece6 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px}
+.skel-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.skel-img{height:170px}
+.skel-body{padding:1rem}
+.skel-line{height:12px;margin-bottom:8px}
+.skel-line.short{width:60%}
+.skel-line.medium{width:80%}
+
+/* NOTIFICATION TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--brand);color:#fff;padding:14px 20px;border-radius:var(--radius);box-shadow:0 8px 32px rgba(0,0,0,.2);font-size:14px;z-index:999;transform:translateY(80px);opacity:0;transition:.3s;max-width:340px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-title{font-weight:600;margin-bottom:2px}
+.toast small{opacity:.7}
+
+/* NOTIFICATION BELL */
+.notif-btn{position:relative;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.notif-btn:hover{background:var(--surface2)}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--brand2);border-radius:50%;border:2px solid #fff}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .detail-grid{grid-template-columns:1fr}
+  .booking-card{position:static}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .hero h1{font-size:2rem}
+  .hero-search{flex-direction:column}
+  .cards-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}
+  nav{padding:0 1rem}
+  .page{padding:1.25rem}
+  .hero{padding:2.5rem 1.5rem}
+  .hero-stats{gap:1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-inner">
+  <div class="logo"><span class="logo-dot"></span>ServeNow</div>
+  <div class="nav-search">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" placeholder="Search services..." id="nav-search-input">
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn ghost" onclick="showPage('home')">Browse</button>
+    <div class="notif-btn" onclick="showToast('You have 3 new notifications','Booking confirmed by Alex K.')"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="notif-dot"></div></div>
+    <button class="nav-btn ghost" onclick="showPage('provider-dash')">Provider Hub</button>
+    <button class="nav-btn ghost" onclick="showPage('auth')">Login</button>
+    <button class="nav-btn primary" onclick="showPage('auth')">Sign Up</button>
+    <div class="avatar" onclick="showPage('dashboard')" title="My Dashboard">JD</div>
+  </div>
+</div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>Find <em>expert services</em><br>near you, instantly.</h1>
+    <p>From home repairs to digital marketing — connect with thousands of vetted professionals.</p>
+    <div class="hero-search">
+      <input type="text" placeholder="What service do you need?" id="hero-input">
+      <button onclick="showToast('Searching...','Finding the best matches for you')">Find Experts</button>
+    </div>
+    <div class="hero-tags">
+      <span class="tag" onclick="filterCat('Plumbing')">Plumbing</span>
+      <span class="tag" onclick="filterCat('Web Design')">Web Design</span>
+      <span class="tag" onclick="filterCat('Cleaning')">Cleaning</span>
+      <span class="tag" onclick="filterCat('Photography')">Photography</span>
+      <span class="tag" onclick="filterCat('Moving')">Moving</span>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>12,400+</strong><span>Services Listed</span></div>
+      <div class="stat"><strong>8,200+</strong><span>Providers</span></div>
+      <div class="stat"><strong>4.8★</strong><span>Avg Rating</span></div>
+    </div>
+  </div>
+
+  <div class="cats" id="cats">
+    <div class="cat-pill active" onclick="filterCat('All')">All Services</div>
+    <div class="cat-pill" onclick="filterCat('Cleaning')"><div class="cat-icon"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=40&h=40&fit=crop&auto=format" alt="cleaning"></div>Cleaning</div>
+    <div class="cat-pill" onclick="filterCat('Plumbing')"><div class="cat-icon"><img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=40&h=40&fit=crop&auto=format" alt="plumbing"></div>Plumbing</div>
+    <div class="cat-pill" onclick="filterCat('Web Design')"><div class="cat-icon"><img src="https://images.unsplash.com/photo-1545670723-196ed0954986?w=40&h=40&fit=crop&auto=format" alt="design"></div>Web Design</div>
+    <div class="cat-pill" onclick="filterCat('Photography')"><div class="cat-icon"><img src="https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=40&h=40&fit=crop&auto=format" alt="photo"></div>Photography</div>
+    <div class="cat-pill" onclick="filterCat('Moving')"><div class="cat-icon"><img src="https://images.unsplash.com/photo-1558618047-3c8d3f0e0b8e?w=40&h=40&fit=crop&auto=format" alt="moving"></div>Moving</div>
+    <div class="cat-pill" onclick="filterCat('Electrical')">Electrical</div>
+    <div class="cat-pill" onclick="filterCat('Tutoring')">Tutoring</div>
+  </div>
+
+  <div class="section-header">
+    <h2>Featured Services</h2>
+    <div class="filters-bar" style="margin-bottom:0">
+      <select class="filter-select" id="sort-select" onchange="renderCards()">
+        <option value="rating">Sort: Top Rated</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="newest">Newest</option>
+      </select>
+      <select class="filter-select" id="price-filter" onchange="renderCards()">
+        <option value="all">Any Price</option>
+        <option value="low">Under ₹500</option>
+        <option value="mid">₹500–₹2000</option>
+        <option value="high">₹2000+</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="cards-grid" class="cards-grid"></div>
+
+  <div class="section-header">
+    <h2>How It Works</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-bottom:2.5rem">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center">
+      <div style="width:52px;height:52px;border-radius:50%;background:#dbeafe;margin:0 auto 1rem;overflow:hidden"><img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=52&h=52&fit=crop&auto=format" alt="browse"></div>
+      <h3 style="font-family:var(--ff-display);font-weight:600;margin-bottom:.5rem">1. Browse</h3>
+      <p style="font-size:14px;color:var(--text2);line-height:1.6">Explore thousands of expert services across categories</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center">
+      <div style="width:52px;height:52px;border-radius:50%;background:#dcfce7;margin:0 auto 1rem;overflow:hidden"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=52&h=52&fit=crop&auto=format" alt="book"></div>
+      <h3 style="font-family:var(--ff-display);font-weight:600;margin-bottom:.5rem">2. Book</h3>
+      <p style="font-size:14px;color:var(--text2);line-height:1.6">Schedule at your preferred time with instant confirmation</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center">
+      <div style="width:52px;height:52px;border-radius:50%;background:#fef3c7;margin:0 auto 1rem;overflow:hidden"><img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=52&h=52&fit=crop&auto=format" alt="done"></div>
+      <h3 style="font-family:var(--ff-display);font-weight:600;margin-bottom:.5rem">3. Done</h3>
+      <p style="font-size:14px;color:var(--text2);line-height:1.6">Get the job done and rate your experience</p>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICE DETAIL PAGE -->
+<div class="page" id="page-detail">
+  <div style="margin-bottom:1.25rem">
+    <button onclick="showPage('home')" style="display:flex;align-items:center;gap:6px;background:none;border:none;font-size:14px;color:var(--text2);cursor:pointer;font-family:var(--ff)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" d="M19 12H5m7-7-7 7 7 7"/></svg>Back to Browse
+    </button>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-main">
+      <div class="detail-img" id="detail-img-wrap">
+        <img id="detail-main-img" src="" alt="">
+        <div class="detail-img-overlay">
+          <div class="badges-row" style="margin-bottom:0">
+            <span class="badge blue" id="detail-category-badge">Category</span>
+            <span class="badge green">★ Top Rated</span>
+          </div>
+        </div>
+      </div>
+      <h1 class="detail-h1" id="detail-title">Service Title</h1>
+      <div class="detail-provider-row">
+        <div class="detail-avatar"><img id="detail-prov-img" src="" alt=""></div>
+        <div class="detail-meta">
+          <strong id="detail-prov-name">Provider Name</strong>
+          <span id="detail-prov-jobs">250 jobs completed · Member since 2021</span>
+        </div>
+        <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <div class="rating" style="font-size:15px">★ <span id="detail-rating" style="color:var(--text)"></span><span id="detail-reviews" style="color:var(--text3);font-size:13px"></span></div>
+          <div style="font-size:12px;color:#22c55e;font-weight:600">● Available Now</div>
+        </div>
+      </div>
+      <div class="badges-row">
+        <span class="badge green">Verified Provider</span>
+        <span class="badge blue">Fast Response</span>
+        <span class="badge">Background Checked</span>
+        <span class="badge">Insured</span>
+      </div>
+      <p class="detail-desc" id="detail-desc">Description loads here.</p>
+      <div class="detail-features">
+        <h3>What's included</h3>
+        <div class="feature-item"><div class="feature-check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#166534" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>Professional-grade equipment</div>
+        <div class="feature-item"><div class="feature-check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#166534" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>100% satisfaction guarantee</div>
+        <div class="feature-item"><div class="feature-check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#166534" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>Free follow-up visit if needed</div>
+        <div class="feature-item"><div class="feature-check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#166534" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>All materials included</div>
+        <div class="feature-item"><div class="feature-check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#166534" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>Flexible scheduling</div>
+      </div>
+      <div class="reviews-section">
+        <div class="section-header"><h2>Reviews</h2><span style="color:var(--text2);font-size:14px" id="review-count"></span></div>
+        <div id="reviews-list"></div>
+      </div>
+    </div>
+    <div>
+      <div class="booking-card">
+        <div class="booking-price">₹<span id="bk-price"></span><small>/session</small></div>
+        <div class="booking-rating">★★★★★ <span id="bk-rating"></span> · <span id="bk-reviews"></span> reviews</div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Select Date</label>
+        <input class="booking-input" type="date" id="bk-date">
+        <label style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Select Time</label>
+        <select class="booking-input">
+          <option>Morning (9 AM – 12 PM)</option>
+          <option>Afternoon (12 PM – 4 PM)</option>
+          <option>Evening (4 PM – 8 PM)</option>
+        </select>
+        <label style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Special Instructions</label>
+        <textarea class="booking-input" rows="3" placeholder="Any specific requirements..."></textarea>
+        <button class="booking-btn" onclick="bookNow()">Book Now — ₹<span id="bk-price2"></span></button>
+        <div style="text-align:center;font-size:12px;color:var(--text3);margin-top:.5rem">You won't be charged until confirmed</div>
+        <div class="booking-features">
+          <div class="bf"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#22c55e" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Free cancellation within 24 hrs</div>
+          <div class="bf"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#22c55e" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Secure payment via Razorpay / Stripe</div>
+          <div class="bf"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#22c55e" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Instant booking confirmation</div>
+        </div>
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;gap:.5rem">
+          <button onclick="showToast('Message sent!','The provider will respond within 30 minutes')" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:8px;background:none;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--ff);display:flex;align-items:center;justify-content:center;gap:6px"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>Message</button>
+          <button onclick="showToast('Saved!','Added to your wishlist')" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:8px;background:none;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--ff);display:flex;align-items:center;justify-content:center;gap:6px"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- USER DASHBOARD -->
+<div class="page" id="page-dashboard">
+  <div class="dash-header">
+    <div>
+      <h1>My Dashboard</h1>
+      <p style="color:var(--text2);font-size:14px">Welcome back, Jayesh Dadhania</p>
+    </div>
+    <button onclick="showPage('home')" style="padding:10px 20px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:14px;cursor:pointer;font-family:var(--ff)">Browse Services</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card stat-card-accent acc-blue">
+      <div class="label">Total Bookings</div>
+      <div class="value">24</div>
+      <div class="change up">+3 this month</div>
+    </div>
+    <div class="stat-card stat-card-accent acc-green">
+      <div class="label">Completed</div>
+      <div class="value">20</div>
+      <div class="change up">83% completion</div>
+    </div>
+    <div class="stat-card stat-card-accent acc-gold">
+      <div class="label">Total Spent</div>
+      <div class="value">₹18,240</div>
+      <div class="change">Since joining</div>
+    </div>
+    <div class="stat-card stat-card-accent acc-red">
+      <div class="label">Saved Services</div>
+      <div class="value">7</div>
+      <div class="change">In wishlist</div>
+    </div>
+  </div>
+  <div class="bookings-table">
+    <div class="table-header">
+      <h3>Recent Bookings</h3>
+      <select class="filter-select">
+        <option>All Bookings</option>
+        <option>Confirmed</option>
+        <option>Completed</option>
+        <option>Pending</option>
+      </select>
+    </div>
+    <table>
+      <thead><tr>
+        <th>Service</th><th>Provider</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>Deep Home Cleaning</strong><br><span style="font-size:12px;color:var(--text3)">Cleaning</span></td><td>Priya Cleaning Co.</td><td>Apr 22, 2026</td><td>₹1,200</td><td><span class="status-pill confirmed">Confirmed</span></td><td><button class="action-btn" onclick="showToast('Booking details','Apr 22 · 10 AM · Deep Home Cleaning')">View</button></td></tr>
+        <tr><td><strong>Plumbing Repair</strong><br><span style="font-size:12px;color:var(--text3)">Plumbing</span></td><td>Ravi Plumbers</td><td>Apr 18, 2026</td><td>₹800</td><td><span class="status-pill completed">Completed</span></td><td><button class="action-btn" onclick="showToast('Review submitted','Thanks for your feedback!')">Review</button></td></tr>
+        <tr><td><strong>Logo Design</strong><br><span style="font-size:12px;color:var(--text3)">Design</span></td><td>Meera Designs</td><td>Apr 15, 2026</td><td>₹3,500</td><td><span class="status-pill pending">Pending</span></td><td><button class="action-btn">View</button></td></tr>
+        <tr><td><strong>Photography Session</strong><br><span style="font-size:12px;color:var(--text3)">Photography</span></td><td>Arjun Lens</td><td>Apr 10, 2026</td><td>₹5,000</td><td><span class="status-pill completed">Completed</span></td><td><button class="action-btn" onclick="showToast('Review submitted','Thanks for your feedback!')">Review</button></td></tr>
+        <tr><td><strong>Electrical Wiring</strong><br><span style="font-size:12px;color:var(--text3)">Electrical</span></td><td>Kumar Electric</td><td>Mar 28, 2026</td><td>₹2,200</td><td><span class="status-pill cancelled">Cancelled</span></td><td><button class="action-btn" onclick="showPage('home')">Rebook</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PROVIDER DASHBOARD -->
+<div class="page" id="page-provider-dash">
+  <div class="prov-hero">
+    <div class="prov-avatar-lg"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=72&h=72&fit=crop&auto=format" alt="provider"></div>
+    <div class="prov-info">
+      <h2>Alex Kumar</h2>
+      <p>Professional Home Services Provider</p>
+      <div class="prov-rating">
+        <span style="color:#f59e0b">★★★★★</span>
+        <span style="font-size:14px">4.9 · 312 reviews · 285 completed jobs</span>
+        <span class="prov-badge">Top Provider</span>
+        <span class="prov-badge">Verified</span>
+      </div>
+    </div>
+    <button onclick="showToast('Profile updated!','Changes saved successfully')" style="margin-left:auto;padding:10px 20px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--ff)">Edit Profile</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card stat-card-accent acc-green">
+      <div class="label">Total Earnings</div>
+      <div class="value">₹2,84,500</div>
+      <div class="change up">+₹18,200 this month</div>
+    </div>
+    <div class="stat-card stat-card-accent acc-blue">
+      <div class="label">Active Listings</div>
+      <div class="value">8</div>
+      <div class="change up">2 pending approval</div>
+    </div>
+    <div class="stat-card stat-card-accent acc-gold">
+      <div class="label">Pending Requests</div>
+      <div class="value">5</div>
+      <div class="change">Awaiting response</div>
+    </div>
+    <div class="stat-card stat-card-accent acc-red">
+      <div class="label">Avg Rating</div>
+      <div class="value">4.9 ★</div>
+      <div class="change up">Top 3% of providers</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div>
+      <div class="bookings-table">
+        <div class="table-header"><h3>Incoming Requests</h3></div>
+        <table>
+          <thead><tr><th>Service</th><th>Client</th><th>Date</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Home Cleaning</strong><br><span style="font-size:12px;color:var(--text3)">₹1,200</span></td><td>Sneha P.</td><td>Apr 26</td><td><button class="action-btn" style="background:var(--brand);color:#fff;border-color:var(--brand)" onclick="showToast('Accepted!','Sneha has been notified')">Accept</button></td></tr>
+            <tr><td><strong>AC Service</strong><br><span style="font-size:12px;color:var(--text3)">₹2,500</span></td><td>Rohan M.</td><td>Apr 27</td><td><button class="action-btn" style="background:var(--brand);color:#fff;border-color:var(--brand)" onclick="showToast('Accepted!','Rohan has been notified')">Accept</button></td></tr>
+            <tr><td><strong>Pest Control</strong><br><span style="font-size:12px;color:var(--text3)">₹3,000</span></td><td>Kavya S.</td><td>Apr 30</td><td><button class="action-btn" onclick="showToast('Accepted!','Kavya has been notified')">Accept</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+        <div class="table-header">
+          <h3>Add New Service</h3>
+          <button onclick="showToast('Service created!','Your listing is under review')" style="padding:8px 16px;background:var(--brand2);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--ff)">Publish</button>
+        </div>
+        <div style="padding:1.25rem">
+          <div class="upload-area" onclick="showToast('Upload ready','Select an image from your device')">
+            <div class="upload-icon">
+              <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="var(--text3)" stroke-width="1.5"><path stroke-linecap="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <div class="upload-text">Drop service image here</div>
+            <div class="upload-hint">PNG, JPG up to 10MB · Min 800×600px</div>
+          </div>
+          <div class="form-group"><label>Service Title</label><input class="form-input" placeholder="e.g., Deep Home Cleaning — 3BHK"></div>
+          <div class="form-group"><label>Category</label><select class="form-select"><option>Cleaning</option><option>Plumbing</option><option>Electrical</option><option>Photography</option><option>Web Design</option></select></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+            <div class="form-group"><label>Price (₹)</label><input class="form-input" type="number" placeholder="1200"></div>
+            <div class="form-group"><label>Duration</label><select class="form-select"><option>1 hour</option><option>2 hours</option><option>Half Day</option><option>Full Day</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH PAGE -->
+<div class="page" id="page-auth">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">ServeNow</div>
+      <div class="auth-subtitle">Connect with thousands of expert service providers</div>
+      <div class="auth-tab-row">
+        <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</div>
+        <div class="auth-tab" id="tab-register" onclick="switchTab('register')">Sign Up</div>
+      </div>
+      <div id="login-form">
+        <div class="form-group"><label>Email Address</label><input class="form-input" type="email" placeholder="you@example.com"></div>
+        <div class="form-group"><label>Password</label><input class="form-input" type="password" placeholder="••••••••"></div>
+        <div style="text-align:right;font-size:13px;margin-bottom:1rem"><a href="#" style="color:var(--brand3)">Forgot password?</a></div>
+        <button class="form-submit" onclick="showToast('Welcome back!','Logged in successfully. Redirecting...');setTimeout(()=>showPage('dashboard'),1000)">Login to Account</button>
+        <div class="divider">or continue with</div>
+        <button class="social-btn"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg>Continue with Google</button>
+      </div>
+      <div id="register-form" style="display:none">
+        <div class="role-selector">
+          <div class="role-opt selected" onclick="selectRole(this)"><span class="role-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></span>Customer</div>
+          <div class="role-opt" onclick="selectRole(this)"><span class="role-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span>Provider</div>
+          <div class="role-opt" onclick="selectRole(this)"><span class="role-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></span>Admin</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div class="form-group"><label>First Name</label><input class="form-input" placeholder="Jayesh"></div>
+          <div class="form-group"><label>Last Name</label><input class="form-input" placeholder="Dadhania"></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><input class="form-input" type="email" placeholder="you@example.com"></div>
+        <div class="form-group"><label>Password</label><input class="form-input" type="password" placeholder="Min 8 characters"></div>
+        <div class="form-group"><label>Phone Number</label><input class="form-input" type="tel" placeholder="+91 98765 43210"></div>
+        <button class="form-submit" onclick="showToast('Account created!','Welcome to ServeNow! Please verify your email.');setTimeout(()=>showPage('dashboard'),1200)">Create Account</button>
+        <div class="divider">or sign up with</div>
+        <button class="social-btn"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg>Continue with Google</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-title" id="toast-title"></div>
+  <small id="toast-msg"></small>
+</div>
+
+<script>
+const services=[
+  {id:1,title:'Professional Deep Home Cleaning — 2/3 BHK',category:'Cleaning',price:1200,rating:4.9,reviews:312,provider:'Priya Cleaning Co.',badge:'Top Pick',desc:'Transform your home with our thorough deep cleaning service. We use eco-friendly, hospital-grade products to sanitize every corner, from kitchen grease to bathroom limescale. Our trained 3-person team covers all rooms systematically.',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&h=600&fit=crop&auto=format'},
+  {id:2,title:'Full-Stack Website Development & Deployment',category:'Web Design',price:15000,rating:4.8,reviews:89,provider:'Meera Tech Studio',badge:'Featured',desc:'Get a complete, responsive website built with React, Node.js and MongoDB. Includes design, development, testing, deployment on cloud, and 3 months of free support. Perfect for startups and SMEs.',img:'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&h=600&fit=crop&auto=format'},
+  {id:3,title:'Professional Wedding & Portrait Photography',category:'Photography',price:8000,rating:5.0,reviews:204,provider:'Arjun Lens',badge:'Top Rated',desc:'Capture your precious moments with cinematic precision. 8-hour coverage, 500+ edited photos delivered in 7 days, drone shots available. Award-winning photographer with 8 years experience.',img:'https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=900&h=600&fit=crop&auto=format'},
+  {id:4,title:'Emergency Plumbing — Pipe Repair & Leak Fix',category:'Plumbing',price:499,rating:4.7,reviews:521,provider:'Ravi Plumbers',badge:'Express',desc:'24/7 emergency plumbing service. We fix leaks, unclog drains, repair burst pipes, and install new fixtures. Licensed and insured. Arrive within 60 minutes, guaranteed.',img:'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=900&h=600&fit=crop&auto=format'},
+  {id:5,title:'Home Shifting & Packing — 1 to 3 BHK',category:'Moving',price:3500,rating:4.6,reviews:178,provider:'SwiftMove Pro',badge:null,desc:'Stress-free relocation service covering packing, loading, transport, and unpacking. GPS-tracked vehicles, insurance included, fragile item specialists.',img:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&h=600&fit=crop&auto=format'},
+  {id:6,title:'Electrical Wiring & Panel Upgrade',category:'Electrical',price:2200,rating:4.8,reviews:143,provider:'Kumar Electric',badge:null,desc:'Certified electrician for all residential and commercial electrical work. Panel upgrades, new wiring, safety inspections, EV charger installation.',img:'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=900&h=600&fit=crop&auto=format'},
+  {id:7,title:'UI/UX Design & Brand Identity Package',category:'Web Design',price:12000,rating:4.9,reviews:67,provider:'DesignForge Studio',badge:'New',desc:'Complete brand identity design including logo, color palette, typography, UI component kit, and Figma file handoff. 3 rounds of revisions included.',img:'https://images.unsplash.com/photo-1545670723-196ed0954986?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1545670723-196ed0954986?w=900&h=600&fit=crop&auto=format'},
+  {id:8,title:'IIT-JEE / NEET Personal Tutoring (Monthly)',category:'Tutoring',price:4500,rating:4.9,reviews:93,provider:'EduPeak Coaching',badge:null,desc:'One-on-one sessions with IIT alumni tutors. Personalized study plan, weekly mock tests, doubt clearing, 24/7 WhatsApp support. 95% selection rate.',img:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop&auto=format',provImg:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&auto=format',bgImg:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&h=600&fit=crop&auto=format'},
+];
+const reviews=[
+  {name:'Sneha Patel',rating:'★★★★★',date:'Apr 2026',text:'Absolutely fantastic service! The team was professional, thorough, and respectful. My house has never looked this clean. Highly recommend!',img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=36&h=36&fit=crop&auto=format'},
+  {name:'Rohan Mehta',rating:'★★★★★',date:'Mar 2026',text:'Booked for the second time and it just keeps getting better. Punctual, efficient, and amazing attention to detail. Worth every rupee.',img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=36&h=36&fit=crop&auto=format'},
+  {name:'Kavya Sharma',rating:'★★★★☆',date:'Mar 2026',text:'Great service overall. They arrived on time and did a solid job. Minor area was missed but was fixed promptly when I pointed it out.',img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=36&h=36&fit=crop&auto=format'},
+];
+
+let activeCat='All', activeSvc=null;
+
+function renderCards(){
+  const sort=document.getElementById('sort-select').value;
+  const priceFilter=document.getElementById('price-filter').value;
+  let filtered=services.filter(s=>activeCat==='All'||s.category===activeCat);
+  if(priceFilter==='low') filtered=filtered.filter(s=>s.price<500);
+  else if(priceFilter==='mid') filtered=filtered.filter(s=>s.price>=500&&s.price<=2000);
+  else if(priceFilter==='high') filtered=filtered.filter(s=>s.price>2000);
+  if(sort==='price-asc') filtered.sort((a,b)=>a.price-b.price);
+  else if(sort==='price-desc') filtered.sort((a,b)=>b.price-a.price);
+  else if(sort==='rating') filtered.sort((a,b)=>b.rating-a.rating);
+  const grid=document.getElementById('cards-grid');
+  if(!filtered.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text3)"><div style="font-size:2rem;margin-bottom:.5rem">🔍</div><div>No services found for this filter</div></div>';return;}
+  grid.innerHTML=filtered.map(s=>`
+    <div class="card" onclick="openDetail(${s.id})">
+      <div class="card-img">
+        <img src="${s.img}" alt="${s.title}" loading="lazy">
+        ${s.badge?`<div class="card-badge">${s.badge}</div>`:''}
+        <div class="card-fav" onclick="event.stopPropagation();showToast('Saved!','Added to wishlist')">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-provider">
+          <div class="provider-avatar"><img src="${s.provImg}" alt="${s.provider}" loading="lazy"></div>
+          <span class="provider-name">${s.provider}</span>
+          <div class="provider-verified"><svg width="8" height="8" fill="#fff" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+        </div>
+        <div class="card-title">${s.title}</div>
+        <div class="card-meta">
+          <div class="rating">★ ${s.rating} <span>(${s.reviews})</span></div>
+          <div class="price">₹${s.price.toLocaleString('en-IN')}<small>/session</small></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCat(cat){
+  activeCat=cat;
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  event.target.closest('.cat-pill')&&event.target.closest('.cat-pill').classList.add('active');
+  renderCards();
+}
+
+function openDetail(id){
+  const s=services.find(x=>x.id===id);
+  if(!s)return;
+  activeSvc=s;
+  document.getElementById('detail-main-img').src=s.bgImg;
+  document.getElementById('detail-main-img').alt=s.title;
+  document.getElementById('detail-title').textContent=s.title;
+  document.getElementById('detail-category-badge').textContent=s.category;
+  document.getElementById('detail-prov-img').src=s.provImg;
+  document.getElementById('detail-prov-name').textContent=s.provider;
+  document.getElementById('detail-rating').textContent=s.rating;
+  document.getElementById('detail-reviews').textContent=` (${s.reviews} reviews)`;
+  document.getElementById('detail-desc').textContent=s.desc;
+  document.getElementById('bk-price').textContent=s.price.toLocaleString('en-IN');
+  document.getElementById('bk-price2').textContent=s.price.toLocaleString('en-IN');
+  document.getElementById('bk-rating').textContent=s.rating;
+  document.getElementById('bk-reviews').textContent=s.reviews;
+  const today=new Date();today.setDate(today.getDate()+1);
+  document.getElementById('bk-date').value=today.toISOString().split('T')[0];
+  document.getElementById('reviews-list').innerHTML=reviews.map(r=>`
+    <div class="review-card">
+      <div class="review-top">
+        <div class="review-avatar"><img src="${r.img}" alt="${r.name}" loading="lazy"></div>
+        <div><div class="review-name">${r.name}</div><div class="stars">${r.rating}</div></div>
+        <span class="review-date">${r.date}</span>
+      </div>
+      <div class="review-text">${r.text}</div>
+    </div>
+  `).join('');
+  document.getElementById('review-count').textContent=`${s.reviews} reviews`;
+  showPage('detail');
+}
+
+function bookNow(){
+  if(!activeSvc)return;
+  showToast('Booking Confirmed! 🎉',`${activeSvc.title} — ₹${activeSvc.price.toLocaleString('en-IN')}. Check your email for details.`);
+}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function switchTab(tab){
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-register').classList.toggle('active',tab==='register');
+  document.getElementById('login-form').style.display=tab==='login'?'block':'none';
+  document.getElementById('register-form').style.display=tab==='register'?'block':'none';
+}
+
+function selectRole(el){
+  document.querySelectorAll('.role-opt').forEach(r=>r.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+let toastTimer;
+function showToast(title,msg){
+  clearTimeout(toastTimer);
+  const t=document.getElementById('toast');
+  document.getElementById('toast-title').textContent=title;
+  document.getElementById('toast-msg').textContent=msg||'';
+  t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+document.getElementById('nav-search-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){showPage('home');renderCards();}
+});
+
+renderCards();
+const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
+const d=document.getElementById('bk-date');
+if(d)d.value=tomorrow.toISOString().split('T')[0];
+</script>
+</body>
+</html>
